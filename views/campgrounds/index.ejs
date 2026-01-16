@@ -1,0 +1,60 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container-fluid px-0">
+  <div id="cluster-map" style="width: 100%; height: 500px"></div>
+</div>
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>All Campgrounds</h1>
+    <a href="/campgrounds/new" class="btn btn-success">Add New Campground</a>
+  </div>
+
+  <% for(let campground of campgrounds) { %>
+  <div class="card mb-4 shadow-sm">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <% if (campground.images.length) { %>
+        <img
+          crossorigin="anonymous"
+          class="img-fluid rounded-start h-100 object-fit-cover"
+          alt="<%= campground.title %>"
+          src="<%= campground.images[0].url %>"
+        />
+        <% } else { %>
+        <img
+          crossorigin="anonymous"
+          class="img-fluid rounded-start h-100 object-fit-cover"
+          alt="Default campground image"
+          src="https://res.cloudinary.com/dadapruqy/image/upload/v1756350801/YelpCamp/g5trrp5v23jpbh3fi1iy.jpg"
+        />
+        <% } %>
+      </div>
+      <div class="col-md-8">
+        <div class="card-body h-100 d-flex flex-column">
+          <h5 class="card-title"><%= campground.title %></h5>
+          <p class="card-text flex-grow-1"><%= campground.description %></p>
+          <div class="d-flex justify-content-between align-items-end mt-auto">
+            <p class="card-text mb-0">
+              <small class="text-muted"><%= campground.location %></small>
+            </p>
+            <a
+              class="btn btn-primary"
+              href="/campgrounds/<%= campground._id %>"
+            >
+              View <%= campground.title %>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<script>
+  const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
+  const campgrounds = { features: <%- JSON.stringify(campgrounds) %>}
+</script>
+
+<script src="/javascripts/clusterMap.js"></script>

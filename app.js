@@ -24,7 +24,7 @@ const reviewRoutes = require("./routes/reviews");
 const MongoStore = require("connect-mongo");
 
 // const dbUrl = process.env.DB_URL;
-const dbUrl = "mongodb://localhost:27017/yelp-camp";
+const dbUrl = "mongodb://127.0.0.1:27017/yelp-camp";
 
 mongoose.connect(dbUrl);
 
@@ -73,7 +73,12 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 app.use(flash());
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+  })
+);
+
 
 const scriptSrcUrls = [
   "https://stackpath.bootstrapcdn.com/",
@@ -92,7 +97,15 @@ const styleSrcUrls = [
   "https://cdn.maptiler.com/",
 ];
 
-const connectSrcUrls = ["https://api.maptiler.com/"];
+const connectSrcUrls = [
+  "https://api.maptiler.com/",
+  "https://cdn.maptiler.com/",
+  "https://cdn.jsdelivr.net/",
+  "https://cdnjs.cloudflare.com/",
+  "https://stackpath.bootstrapcdn.com/",
+  "https://kit.fontawesome.com/",
+];
+
 
 const fontSrcUrls = [];
 app.use(
